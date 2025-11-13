@@ -142,14 +142,13 @@ class BlogPost(BaseModel):
     image = models.ImageField(upload_to="blogs_pics/", blank=True, null=True)
     banner_image = models.ImageField(upload_to="blogs_banner/", blank=True, null=True)
     keywords = models.TextField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
     description_1 = models.TextField(blank=True, null=True)
     description_2 = models.TextField(blank=True, null=True)
     description_3 = models.TextField(blank=True, null=True)
     description_4 = models.TextField(blank=True, null=True)
 
     # 👉 Blog Tags (Many-to-Many)
-   
+    content = models.TextField(blank=True, null=True)
     srno = models.PositiveSmallIntegerField(default=1, blank=True, null=True)
     psrno = models.PositiveSmallIntegerField(default=999, blank=True, null=True)
     status = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
@@ -165,7 +164,7 @@ class BlogPost(BaseModel):
 
 class BlogTag(BaseModel):
     
-    tag_name = models.CharField(max_length=50, unique=True)
+    tag_name = models.CharField(max_length=50, blank=True ,null=True)
     blog = models.ForeignKey(BlogPost, on_delete=models.SET_NULL, null=True, blank=True, related_name="BlogTag")
     
     def __str__(self):
@@ -374,6 +373,78 @@ class Tourmaster(BaseModel):
         ('nature', 'Nature'),
         ('complete', 'Complete'),
         ('category', 'Category'),
+        # 🌍 Main Category Types (Tour Nature)
+        ('international_tour', 'International Tour'),
+        ('domestic_tour', 'Domestic Tour'),
+        ('honeymoon_tour', 'Honeymoon Tour'),
+        ('family_tour', 'Family Tour'),
+        ('group_tour', 'Group Tour'),
+        ('luxury_tour', 'Luxury Tour'),
+        ('budget_tour', 'Budget Tour'),
+        ('corporate_business_tour', 'Corporate / Business Tour'),
+        ('student_tour', 'Student Tour'),
+        ('custom_tour', 'Custom Tour (Tailor-Made)'),
+
+        # 🏖 Destination-Based Category
+        ('dubai_tour', 'Dubai Tour'),
+        ('thailand_tour', 'Thailand Tour'),
+        ('singapore_tour', 'Singapore Tour'),
+        ('malaysia_tour', 'Malaysia Tour'),
+        ('bali_tour', 'Bali Tour'),
+        ('maldives_tour', 'Maldives Tour'),
+        ('europe_tour', 'Europe Tour'),
+        ('usa_tour', 'USA Tour'),
+        ('australia_tour', 'Australia Tour'),
+        ('mauritius_tour', 'Mauritius Tour'),
+        ('india_tour', 'India Tour'),
+        ('kashmir_tour', 'Kashmir Tour'),
+        ('himachal_tour', 'Himachal Tour'),
+        ('rajasthan_tour', 'Rajasthan Tour'),
+        ('kerala_tour', 'Kerala Tour'),
+        ('north_east_india_tour', 'North East India Tour'),
+        ('andaman_tour', 'Andaman Tour'),
+        ('goa_tour', 'Goa Tour'),
+        ('nepal_tour', 'Nepal Tour'),
+        ('bhutan_tour', 'Bhutan Tour'),
+
+        # ⏳ Duration-Based Category
+        ('2n_3d', '2 Nights / 3 Days'),
+        ('3n_4d', '3 Nights / 4 Days'),
+        ('4n_5d', '4 Nights / 5 Days'),
+        ('5n_6d', '5 Nights / 6 Days'),
+        ('6n_7d', '6 Nights / 7 Days'),
+        ('7n_8d', '7 Nights / 8 Days'),
+        ('8n_9d', '8 Nights / 9 Days'),
+        ('9n_10d', '9 Nights / 10 Days'),
+        ('10n_plus', '10+ Days Tour'),
+
+        # 🎯 Theme / Experience-Based Category
+        ('adventure_tour', 'Adventure Tour'),
+        ('beach_holiday', 'Beach Holiday'),
+        ('desert_experience', 'Desert Experience'),
+        ('wildlife_tour', 'Wildlife Tour'),
+        ('hill_station_tour', 'Hill Station Tour'),
+        ('religious_pilgrimage_tour', 'Religious / Pilgrimage Tour'),
+        ('cruise_experience', 'Cruise Experience'),
+        ('romantic_couple_tour', 'Romantic / Couple Tour'),
+        ('cultural_heritage_tour', 'Cultural & Heritage Tour'),
+        ('shopping_tour', 'Shopping Tour'),
+        ('festival_special_tour', 'Festival Special Tour'),
+        ('weekend_getaway', 'Weekend Getaway'),
+        ('wellness_spa_tour', 'Wellness & Spa Tour'),
+        ('short_break', 'Short Break / Mini Holiday'),
+        ('educational_tour', 'Educational Tour'),
+
+        # 💼 Package Type (Optional for Backend Use)
+        ('fixed_departure', 'Fixed Departure'),
+        ('customized_package', 'Customized Package'),
+        ('group_departure', 'Group Departure'),
+        ('early_bird_offer', 'Early Bird Offer'),
+        ('special_discounted_package', 'Special Discounted Package'),
+        ('all_inclusive_package', 'All-Inclusive Package'),
+        ('visa_flight_hotel_package', 'Visa + Flight + Hotel Package'),
+        ('land_only_package', 'Land-Only Package'),
+        ('seasonal_offer', 'Seasonal Offer (Summer / Winter)'),
     ]
 
     CURRENCY_CHOICES = [
@@ -402,6 +473,8 @@ class Tourmaster(BaseModel):
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='INR', blank=True, null=True)
     on_basis = models.CharField(max_length=50, choices=BASIS_CHOICES, default='per_person', blank=True, null=True)
+    package_info = models.TextField(blank=True, null=True)
+
 
    
     # Paragraph = models.TextField(blank=True, null=True)

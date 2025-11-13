@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'shreeswaroyasethapp',
     'rest_framework',
     'django_summernote',
-    'corsheaders'
+    'corsheaders',
+    'nested_admin'
 ]
 
 MIDDLEWARE = [
