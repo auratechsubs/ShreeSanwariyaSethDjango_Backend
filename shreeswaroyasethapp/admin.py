@@ -99,9 +99,16 @@ class BlogPostsAdmin(SummernoteModelAdmin, nested_admin.NestedModelAdmin):
 @admin.register(WhyChooseUs)
 class WhyChooseUsAdmin(SummernoteModelAdmin):
     summernote_fields = (
-        'description',
-        
+        'description',  
     )
+
+@admin.register(TermsAndCondition)
+class TermsAndConditionAdmin(SummernoteModelAdmin):
+    summernote_fields = (
+        'terms_and_conditions', 
+        'privacy_policy' 
+    )
+
     
 @admin.register(ContactUs)
 class contactAdmin(SummernoteModelAdmin):
@@ -159,7 +166,7 @@ class ServiceHighlightInline(SummernoteInlineModelAdmin, nested_admin.NestedStac
 
 @admin.register(ServiceMaster)
 class ServiceMasterAdmin(SummernoteModelAdmin, nested_admin.NestedModelAdmin):
-    summernote_fields = ('short_description',)
+    summernote_fields = ('short_description','service_info')
     inlines = [
         ServiceDetailInline,
         ServiceHighlightInline,
@@ -221,7 +228,7 @@ class HotelRatingInline(nested_admin.NestedStackedInline):
 # ---------------------------------------------------
 @admin.register(HotelMaster)
 class HotelMasterAdmin(SummernoteModelAdmin, nested_admin.NestedModelAdmin):
-    summernote_fields = ('short_description', 'about_hotel')
+    summernote_fields = ('short_description', 'about_hotel' , 'hotel_info')
     inlines = [
         HotelHighlightInline,
         HotelAmenityInline,

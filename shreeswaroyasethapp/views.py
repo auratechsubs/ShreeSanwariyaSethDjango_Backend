@@ -789,3 +789,14 @@ class BannerView(APIView):
 
         serializer = BannerSerializer(banners, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class TermsAndConditionView(APIView):
+    def get(self, request,pk=None):
+        if pk:
+            obj = get_object_or_404(TermsAndCondition, pk=pk, record_status="Active")
+            serializer = TermsAndConditionSerializer(obj)
+        else:
+            obj = TermsAndCondition.objects.all()
+        serializer = TermsAndConditionSerializer(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -112,6 +112,7 @@ class TourDetailSerializer(serializers.ModelSerializer):
 
     included_facilities = serializers.SerializerMethodField()
     excluded_facilities = serializers.SerializerMethodField()
+    currency_display = serializers.CharField(source='get_currency_display', read_only=True)
 
     class Meta:
         model = Tourmaster
@@ -199,6 +200,7 @@ class HotelRoomTypefeaturesSerializer(serializers.ModelSerializer):
 
 class HotelRoomTypeSerializer(serializers.ModelSerializer):
     RoomTypefeature = HotelRoomTypefeaturesSerializer(source="HotelRoomTypefeatures", many=True, read_only=True)
+    currency_display = serializers.CharField(source='get_currency_display', read_only=True)
     class Meta:
         model = HotelRoomType
         fields = '__all__'
@@ -214,6 +216,8 @@ class HotelRatingSerializer(serializers.ModelSerializer):
 
 class HotelMasterSerializer(serializers.ModelSerializer):
     city = CitySerializer(read_only=True)  
+    currency_display = serializers.CharField(source='get_currency_display', read_only=True)
+    
     HotelHighlights = HotelHighlightSerializer(source="HotelHighlight", many=True, read_only=True)
     HotelAmenitys = HotelAmenitySerializer(source="HotelAmenity",many=True, read_only=True)
     HotelRoomTypes = HotelRoomTypeSerializer(source="HotelRoomType",many=True, read_only=True)
@@ -243,4 +247,9 @@ class ContectUsSubmitSerializer(serializers.ModelSerializer):
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = banner
+        fields = '__all__'
+
+class TermsAndConditionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TermsAndCondition
         fields = '__all__'

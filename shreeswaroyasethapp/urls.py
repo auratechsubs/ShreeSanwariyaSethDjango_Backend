@@ -40,6 +40,9 @@ urlpatterns = [
     path('contactsubmit/', ContectUsSubmitAPIView.as_view(), name='contact-submit'),
     path('contactsubmit/<int:pk>/', ContectUsSubmitAPIView.as_view(), name='contact-submit'),
 
+    path('termsAndCondition/', TermsAndConditionView.as_view(), name='termsAndCondition'),
+    path('termsAndCondition/<int:pk>/', TermsAndConditionView.as_view(), name='termsAndCondition'),
+
     path('banner/', BannerView.as_view(), name='banner-api'),
 ]
 

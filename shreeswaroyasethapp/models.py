@@ -8,7 +8,18 @@ import random
 import string
 
 date_format = '%Y-%m-%d %H:%M:%S'
-
+CURRENCY_CHOICES = [
+        ('INR', '₹'),
+        ('USD', '$'),
+        ('EUR', '€'),
+        ('GBP', '£'),
+    ]
+BASIS_CHOICES = [
+        ('Per Person', 'Per Person'),
+        ('Per Day', 'Per Day'),
+        ('Per Night', 'Per Night'),
+        ('Per Group', 'Per Group'),
+    ]
 class BaseModel(models.Model):
     RECORD_STATUS_CHOICES = [
         ('Active', 'Active'),
@@ -447,19 +458,7 @@ class Tourmaster(BaseModel):
         ('seasonal_offer', 'Seasonal Offer (Summer / Winter)'),
     ]
 
-    CURRENCY_CHOICES = [
-        ('INR', 'INR (₹)'),
-        ('USD', 'USD ($)'),
-        ('EUR', 'EUR (€)'),
-        ('GBP', 'GBP (£)'),
-    ]
-
-    BASIS_CHOICES = [
-        ('per_person', 'Per Person'),
-        ('per_day', 'Per Day'),
-        ('per_night', 'Per Night'),
-        ('per_group', 'Per Group'),
-    ]
+    
 
     Tour_id = models.AutoField(primary_key=True)
     tour_title = models.CharField(max_length=255, blank=True, null=True)
@@ -498,7 +497,7 @@ class Tourmaster(BaseModel):
 class TourItineraryMaster(BaseModel):
     itinerary_id = models.AutoField(primary_key=True)
     tour = models.ForeignKey(Tourmaster, on_delete=models.CASCADE, related_name="TourItineraryMaster")
-    day_number = models.PositiveIntegerField()
+    day_number = models.PositiveIntegerField(blank=True, null=True)
     day_heading = models.CharField(max_length=255, blank=True, null=True)
     day_detail = models.TextField(blank=True, null=True)
 
@@ -508,7 +507,6 @@ class TourItineraryMaster(BaseModel):
 
     def __str__(self):
         return f"{self.tour.tour_title} - Day {self.day_number}"
-
 
 class TourFacility(BaseModel):
     FACILITY_TYPE_CHOICES = [
@@ -582,6 +580,8 @@ class ServiceMaster(BaseModel):
     service_home_feature_2 = models.CharField(max_length=255, blank=True, null=True)
     service_home_feature_3 = models.CharField(max_length=255, blank=True, null=True)
     service_home_feature_4 = models.CharField(max_length=255, blank=True, null=True)
+    service_info = models.TextField(blank=True, null=True)
+
     is_home = models.BooleanField(default=False)
 
     class Meta:
@@ -650,17 +650,7 @@ class ServiceHighlightMaster(BaseModel):
 
 
 class HotelMaster(BaseModel):
-    CURRENCY_CHOICES = [
-        ('INR', 'INR (₹)'),
-        ('USD', 'USD ($)'),
-        ('EUR', 'EUR (€)'),
-    ]
-    BASIS_CHOICES = [
-        ('per person', 'Per Person'),
-        ('per day', 'Per Day'),
-        ('per night', 'Per Night'),
-        ('per group', 'Per Group'),
-    ]
+   
 
     hotel_id = models.AutoField(primary_key=True)
     hotel_title = models.CharField(max_length=255, blank=True, null=True)
@@ -672,12 +662,13 @@ class HotelMaster(BaseModel):
     avg_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='INR')
-    on_basis = models.CharField(max_length=50, choices=BASIS_CHOICES, default='per_night')
+    on_basis = models.CharField(max_length=50, choices=BASIS_CHOICES, default='Per Night')
     thumbnail = models.FileField(upload_to="hotel/thumbs", blank=True, null=True)
     banner_image = models.FileField(upload_to="hotel/banner", blank=True, null=True)
-
     short_description = models.TextField(blank=True, null=True)
     about_hotel = models.TextField(blank=True, null=True)
+    hotel_info = models.TextField(blank=True, null=True)
+
 
     class Meta:
         db_table = "HotelMaster"
@@ -720,22 +711,12 @@ class HotelAmenity(BaseModel):
 
 
 class HotelRoomType(BaseModel):
-    BASIS_CHOICES = [
-        ('per person', 'Per Person'),
-        ('per day', 'Per Day'),
-        ('per night', 'Per Night'),
-        ('per group', 'Per Group'),
-    ]
-    CURRENCY_CHOICES = [
-        ('INR', 'INR (₹)'),
-        ('USD', 'USD ($)'),
-        ('EUR', 'EUR (€)'),
-    ]
+    
     room_id = models.AutoField(primary_key=True)
     hotel = models.ForeignKey(HotelMaster, on_delete=models.CASCADE, related_name="HotelRoomType")
     room_name = models.CharField(max_length=255, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    on_basis = models.CharField(max_length=50, choices=BASIS_CHOICES, default='per_night')
+    on_basis = models.CharField(max_length=50, choices=BASIS_CHOICES, default='Per Night')
     currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='INR')
 
 
@@ -817,3 +798,9 @@ class WhyChooseUsFeature(BaseModel):
         return self.name
     
 
+class TermsAndCondition(BaseModel):
+    terms_and_conditions = models.TextField(blank=True, null=True)
+    privacy_policy = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.terms_and_conditions or "Terms and Conditions"     
